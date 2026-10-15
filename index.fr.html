@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f6f2">
+    <meta name="description" content="Hôtel Marceline — une hospitalité attentionnée, gérée en toute simplicité.">
+    <title>Marceline — Gestion hôtelière</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#" aria-label="Accueil Marceline">
+          <span class="brand-mark">M</span>
+          <span class="brand-name">marceline<span class="brand-caption">HÔTEL & RÉSIDENCES</span></span>
+        </a>
+        <div class="property-select"><span class="property-dot"></span><span>Marceline Marrakech</span><span class="chevron">⌄</span></div>
+        <p class="nav-label">ESPACE DE TRAVAIL</p>
+        <nav class="main-nav" aria-label="Navigation principale">
+          <button class="nav-item active" data-view="Overview"><span class="nav-icon">◫</span>Vue d’ensemble</button>
+          <button class="nav-item" data-view="Reservations"><span class="nav-icon">▤</span>Réservations<span class="nav-count" id="reservation-count">4</span></button>
+          <button class="nav-item" data-view="Rooms"><span class="nav-icon">▦</span>Chambres</button>
+          <button class="nav-item" data-view="Guests"><span class="nav-icon">♙</span>Clientèle</button>
+          <button class="nav-item" data-view="Housekeeping"><span class="nav-icon">✳</span>Entretien<span class="nav-alert">3</span></button>
+        </nav>
+        <p class="nav-label nav-label-spaced">ANALYSES</p>
+        <nav class="main-nav" aria-label="Navigation des analyses">
+          <button class="nav-item" data-view="Analytics"><span class="nav-icon">⌁</span>Analyses</button>
+          <button class="nav-item" data-view="Guest experience"><span class="nav-icon">♡</span>Expérience client</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="team-card">
+            <div class="team-avatars"><span>SA</span><span>YK</span><span>+4</span></div>
+            <p><strong>Votre équipe</strong><br><span>6 membres en ligne</span></p>
+            <span class="online-dot"></span>
+          </div>
+          <button class="nav-item settings-item"><span class="nav-icon">⚙</span>Paramètres</button>
+          <div class="profile">
+            <div class="avatar avatar-dark">AM</div>
+            <div class="profile-copy"><strong>Amira Mansouri</strong><span>Directrice de l’hôtel</span></div>
+            <button class="icon-button profile-menu" aria-label="Options du profil">···</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="mobile-menu icon-button" id="menu-toggle" aria-label="Ouvrir la navigation">☰</button>
+          <div class="breadcrumb">Marceline Marrakech <span>/</span> <strong id="breadcrumb-current">Vue d’ensemble</strong></div>
+          <div class="topbar-actions">
+            <div class="date-chip"><span>◷</span><span id="today-label"></span></div>
+            <a class="language-link" href="index.html" lang="en">English</a>
+            <button class="icon-button notification-button" id="notification-button" aria-label="Notifications">♧<i></i></button>
+            <div class="avatar avatar-dark top-avatar">AM</div>
+          </div>
+        </header>
+
+        <div class="page-wrap">
+          <section class="welcome-row">
+            <div><p class="eyebrow" id="greeting"></p><h1 id="page-title"></h1><p class="subtitle" id="page-subtitle">Voici les actualités de votre hôtel aujourd’hui.</p></div>
+            <button class="primary-button" id="add-reservation"><span>＋</span> Nouvelle réservation</button>
+          </section>
+
+          <div id="dashboard-content">
+            <section class="stat-grid" aria-label="Performance de l’hôtel">
+              <article class="stat-card"><div class="stat-top"><span>Taux d’occupation</span><span class="stat-icon green">▦</span></div><div class="stat-value">84<span class="stat-unit">%</span><span class="trend positive">↗ 6,2 %</span></div><div class="stat-foot"><span>contre 77 % la semaine dernière</span><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></article>
+              <article class="stat-card"><div class="stat-top"><span>Arrivées du jour</span><span class="stat-icon peach">↘</span></div><div class="stat-value" id="arrival-total">4<span class="trend neutral">2 attendues</span></div><div class="stat-foot"><span id="arrival-summary">2 arrivées · 2 attendues</span><div class="mini-bars peach-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></article>
+              <article class="stat-card"><div class="stat-top"><span>Revenus du jour</span><span class="stat-icon gold">◈</span></div><div class="stat-value">8 420 €<span class="trend positive">↗ 12,8 %</span></div><div class="stat-foot"><span>Chambres et expériences</span><div class="mini-bars gold-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></article>
+              <article class="stat-card"><div class="stat-top"><span>Satisfaction client</span><span class="stat-icon lavender">♡</span></div><div class="stat-value">4,92<span class="stat-unit">/5</span><span class="trend positive">↗ 0,3</span></div><div class="stat-foot"><span>86 avis récents</span><div class="mini-bars lavender-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></article>
+            </section>
+
+            <section class="insight-banner">
+              <div class="insight-symbol">✳</div><div class="insight-copy"><span class="insight-kicker">INTELLIGENCE MARCELINE <i>NOUVEAU</i></span><p><strong>Une belle attention à prévoir :</strong> 3 clients célèbrent leur anniversaire de mariage aujourd’hui. Un accueil personnalisé rendrait leur séjour inoubliable.</p></div>
+              <button class="text-button" id="insight-action">Voir la clientèle <span>→</span></button>
+            </section>
+
+            <div class="dashboard-grid">
+              <section class="panel arrivals-panel">
+                <div class="panel-heading"><div><h2>Arrivées du jour</h2><p>Les prochains accueils à préparer</p></div><button class="subtle-button" data-open-view="Reservations">Tout voir <span>→</span></button></div>
+                <div class="table-wrap"><table><thead><tr><th>CLIENT</th><th>CHAMBRE</th><th>SÉJOUR</th><th>STATUT</th><th></th></tr></thead><tbody id="arrival-rows"></tbody></table></div>
+                <div class="arrival-footer"><span class="live-dot"></span> <span id="arrival-footer-text">2 arrivées encore attendues aujourd’hui</span><button class="text-button" data-open-view="Reservations">Voir le planning →</button></div>
+              </section>
+
+              <section class="panel occupancy-panel">
+                <div class="panel-heading"><div><h2>État des chambres</h2><p>Vue en temps réel de l’hôtel</p></div><button class="icon-button more-button" aria-label="Options des chambres">···</button></div>
+                <div class="room-summary"><div class="donut"><div><strong>84 %</strong><span>occupées</span></div></div><div class="legend"><div><i class="legend-dot occupied"></i><span>Occupées</span><strong>42</strong></div><div><i class="legend-dot ready"></i><span>Prêtes</span><strong>8</strong></div><div><i class="legend-dot cleaning"></i><span>En préparation</span><strong>4</strong></div></div></div>
+                <div class="room-callout"><span class="sparkle">✳</span><span><strong>La chambre 208 est prête</strong><br>Arrivée anticipée possible pour Sofia Laurent</span><button aria-label="Voir la chambre 208" id="room-callout-action">→</button></div>
+              </section>
+            </div>
+
+            <div class="lower-grid">
+              <section class="panel activity-panel">
+                <div class="panel-heading"><div><h2>Expérience client</h2><p>Les petites attentions qui font la différence</p></div><button class="subtle-button" data-open-view="Guest experience">Tout voir <span>→</span></button></div>
+                <div class="experience-list">
+                  <div class="experience-item"><div class="experience-icon experience-green">♡</div><div><strong>Cadeau de bienvenue livré</strong><span>Chambre 312 · Amina El Idrissi</span></div><time>09 h 42</time></div>
+                  <div class="experience-item"><div class="experience-icon experience-peach">✳</div><div><strong>Anniversaire de mariage signalé</strong><span>Chambre 208 · Sofia Laurent</span></div><time>09 h 18</time></div>
+                  <div class="experience-item"><div class="experience-icon experience-gold">☼</div><div><strong>Table au jardin réservée</strong><span>Famille Benali · 19 h 30</span></div><time>08 h 56</time></div>
+                </div>
+              </section>
+              <section class="panel tasks-panel">
+                <div class="panel-heading"><div><h2>Entretien</h2><p>Chaque détail compte</p></div><button class="subtle-button" data-open-view="Housekeeping">Ouvrir le tableau <span>→</span></button></div>
+                <div class="task-progress"><div><span>Chambres prêtes pour les arrivées</span><strong>8 <small>/ 12</small></strong></div><div class="progress-track"><span></span></div></div>
+                <div class="task-row"><span class="task-check checked">✓</span><span>Suite 312 <small>— Prête pour l’arrivée</small></span><span class="task-assignee">YK</span></div>
+                <div class="task-row"><span class="task-check">·</span><span>Suite 208 <small>— Inspection finale</small></span><span class="task-assignee peach-assignee">SA</span></div>
+                <div class="task-row"><span class="task-check">·</span><span>Chambre 104 <small>— Service de soirée demandé</small></span><span class="task-assignee gold-assignee">LM</span></div>
+              </section>
+            </div>
+          </div>
+          <section id="view-workspace" class="view-workspace" aria-live="polite" hidden></section>
+          <footer class="page-footer"><span>L’art de l’accueil, depuis 1987.</span><span>Tous les systèmes fonctionnent normalement <i class="live-dot"></i></span></footer>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <dialog class="reservation-dialog" id="reservation-dialog">
+      <form id="reservation-form">
+        <div class="dialog-top"><div><span class="eyebrow">FAITES DE CHAQUE SÉJOUR UN SOUVENIR</span><h2>Nouvelle réservation</h2></div><button type="button" class="icon-button close-dialog" aria-label="Fermer">×</button></div>
+        <label>Nom du client<input name="guest" required placeholder="ex. Leïla Haddad"></label>
+        <div class="form-row"><label>Chambre<input name="room" required placeholder="ex. 214"></label><label>Arrivée<input name="date" type="date" required></label></div>
+        <label>Notes sur le séjour <span class="optional">(facultatif)</span><textarea name="notes" rows="3" placeholder="Une attention particulière à prévoir ?"></textarea></label>
+        <div class="dialog-actions"><button type="button" class="secondary-button close-dialog">Annuler</button><button class="primary-button" type="submit">Créer la réservation <span>→</span></button></div>
+      </form>
+    </dialog>
+    <script src="app.js"></script>
+  </body>
+</html>

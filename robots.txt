@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jotrillion.github.io/marceline-hotel/sitemap.xml
