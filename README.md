@@ -24,4 +24,4 @@ In the repository’s **Settings → Pages**, set the build and deployment sourc
 
 The English page is the default; use its **FR** link for the French Marceline version.
 
-This app currently uses in-memory demonstration data. Reservations and check-ins are not persisted to a database.
+Reservations, check-ins, and housekeeping updates are saved in the current browser for this local demo. They are not shared between visitors or synced to a hotel database.

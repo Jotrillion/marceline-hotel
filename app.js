@@ -62,7 +62,6 @@ const frenchPhrases = {
   " complete": " terminées",
   "Reopen": "Rouvrir",
   "Complete": "Terminer",
-  "task": "la tâche",
   "Final inspection": "Inspection finale",
   "Prepare for arrival": "Préparer pour l’arrivée",
   "Occupancy this week": "Taux d’occupation cette semaine",
@@ -155,12 +154,64 @@ const housekeepingTasks = [
   { room: "Room 104", task: "Turn-down requested", assignee: "LM", done: false },
   { room: "Room 214", task: "Prepare for arrival", assignee: "YK", done: false }
 ];
+const demoStateKey = "marceline-hotel-demo-v1";
+let persistenceWarning = "";
 
 const arrivalRows = document.querySelector("#arrival-rows");
 const toast = document.querySelector("#toast");
 const dialog = document.querySelector("#reservation-dialog");
 const title = document.querySelector("#page-title");
 const subtitle = document.querySelector("#page-subtitle");
+
+function loadDemoState() {
+  let storedState;
+  try {
+    const storedValue = window.localStorage.getItem(demoStateKey);
+    if (!storedValue) return;
+    storedState = JSON.parse(storedValue);
+  } catch (error) {
+    persistenceWarning = "Saved demo data could not be read. Changes in this session may not persist.";
+    console.error("Unable to read saved hotel demo data.", error);
+    return;
+  }
+
+  const validArrivals = Array.isArray(storedState?.arrivals) && storedState.arrivals.every(guest =>
+    guest && ["name", "detail", "room", "stay", "status", "initials", "tone", "arrivalDate"].every(key => typeof guest[key] === "string")
+    && ["Expected", "Checked in"].includes(guest.status)
+  );
+  const validTasks = Array.isArray(storedState?.housekeepingTasks) && storedState.housekeepingTasks.length === housekeepingTasks.length
+    && storedState.housekeepingTasks.every((task, index) =>
+      task && task.room === housekeepingTasks[index].room && task.task === housekeepingTasks[index].task && typeof task.done === "boolean"
+    );
+
+  if (!storedState || typeof storedState !== "object" || storedState.version !== 1 || !validArrivals || !validTasks) {
+    persistenceWarning = "Saved demo data is invalid. The default hotel demo data has been loaded.";
+    console.error("Saved hotel demo data did not match the expected version and format.");
+    return;
+  }
+
+  arrivals = storedState.arrivals;
+  storedState.housekeepingTasks.forEach((task, index) => {
+    housekeepingTasks[index].done = task.done;
+  });
+}
+
+function saveDemoState() {
+  try {
+    window.localStorage.setItem(demoStateKey, JSON.stringify({
+      version: 1,
+      arrivals,
+      housekeepingTasks
+    }));
+    return true;
+  } catch (error) {
+    console.error("Unable to save hotel demo data.", error);
+    announce("Your change was made, but this browser could not save it for the next visit.");
+    return false;
+  }
+}
+
+loadDemoState();
 
 document.querySelector("#today-label").textContent = today.toLocaleDateString(isFrench ? "fr-FR" : "en", { weekday: "short", month: "short", day: "numeric" });
 document.querySelector("#greeting").textContent = today.toLocaleDateString(isFrench ? "fr-FR" : "en", { weekday: "long", month: "long", day: "numeric" }).toUpperCase();
@@ -181,7 +232,7 @@ function renderArrivals() {
   arrivalRows.innerHTML = localize(visible.length ? visible.map((guest, index) => {
     const statusClass = guest.status === "Checked in" ? "checked-in" : "pending";
     const action = guest.status === "Expected"
-      ? `<button class="row-action" data-check-in="${index}">Check in</button>`
+        ? guest.arrivalDate <= localDateValue ? `<button class="row-action" data-check-in="${index}">Check in</button>` : `<span>${escapeHtml(localize("Scheduled"))}</span>`
       : `<span aria-hidden="true">···</span>`;
     return `<tr>
       <td><div class="guest-cell"><span class="guest-avatar ${guest.tone}">${escapeHtml(guest.initials)}</span><div><div class="guest-name">${escapeHtml(guest.name)}</div><div class="guest-detail">${escapeHtml(guest.detail)}</div></div></div></td>
@@ -208,6 +259,11 @@ function formatArrivalDate(date) {
   return new Date(`${date}T12:00:00`).toLocaleDateString(isFrench ? "fr-FR" : "en", { month: "short", day: "numeric" });
 }
 
+function housekeepingActionLabel(task) {
+  if (isFrench) return `${task.done ? "Rouvrir" : "Terminer"} la tâche ${task.room}`;
+  return `${task.done ? "Reopen" : "Complete"} ${task.room} task`;
+}
+
 function renderWorkspace(view) {
   const workspace = document.querySelector("#view-workspace");
   const guestRows = arrivals.map((guest, index) => `
@@ -218,7 +274,7 @@ function renderWorkspace(view) {
     Reservations: `<section class="panel workspace-panel"><div class="panel-heading"><div><h2>Reservation schedule</h2><p>${arrivals.length} bookings on file</p></div><button class="primary-button workspace-add" data-add-reservation>＋ New reservation</button></div><div class="table-wrap"><table><thead><tr><th>GUEST</th><th>ROOM</th><th>ARRIVAL</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody>${guestRows || '<tr><td colspan="5"><div class="empty-state">No reservations yet. Add your first guest to get started.</div></td></tr>'}</tbody></table></div></section>`,
     Rooms: `<div class="workspace-intro"><div><span class="eyebrow">LIVE ROOM BOARD</span><h2>Every room, at a glance</h2></div><span class="board-legend"><i class="legend-dot occupied"></i> Occupied <i class="legend-dot ready"></i> Ready <i class="legend-dot cleaning"></i> Needs attention</span></div><div class="room-grid">${rooms.map(room => `<article class="room-card"><div class="room-card-top"><span class="room-number">Room ${escapeHtml(room.number)}</span><span class="room-status ${room.tone}">${escapeHtml(room.status)}</span></div><p>${escapeHtml(room.type)}</p>${room.number === "208" ? '<button class="row-action" data-room-action="208">View arrival details</button>' : `<span class="room-updated">Updated just now</span>`}</article>`).join("")}</div>`,
     Guests: `<section class="panel workspace-panel"><div class="panel-heading"><div><h2>Guest directory</h2><p>Personal touches, made easy</p></div><span class="guest-count">${arrivals.length} guest profiles</span></div><div class="guest-card-grid">${arrivals.map(guest => `<article class="guest-card"><div class="guest-cell"><span class="guest-avatar ${guest.tone}">${escapeHtml(guest.initials)}</span><div><div class="guest-name">${escapeHtml(guest.name)}</div><div class="guest-detail">Room ${escapeHtml(guest.room)} · Arrives ${escapeHtml(formatArrivalDate(guest.arrivalDate))}</div></div></div><p>${escapeHtml(guest.detail)}</p><span class="status-pill ${guest.status === "Checked in" ? "checked-in" : "pending"}">${escapeHtml(guest.status)}</span></article>`).join("") || '<div class="empty-state">Guest profiles will appear here when reservations are added.</div>'}</div></section>`,
-    Housekeeping: `<section class="panel workspace-panel"><div class="panel-heading"><div><h2>Today’s room preparations</h2><p>${housekeepingTasks.filter(task => !task.done).length} tasks need attention</p></div><span class="guest-count">${housekeepingTasks.filter(task => task.done).length} of ${housekeepingTasks.length} complete</span></div><div class="progress-track workspace-progress"><span style="width:${housekeepingTasks.filter(task => task.done).length / housekeepingTasks.length * 100}%"></span></div><div class="task-board">${housekeepingTasks.map((task, index) => `<div class="task-board-row"><button class="task-check ${task.done ? "checked" : ""}" data-task-done="${index}" aria-label="${task.done ? "Reopen" : "Complete"} ${escapeHtml(task.room)} task">${task.done ? "✓" : "·"}</button><div><strong>${escapeHtml(task.room)}</strong><span>${escapeHtml(task.task)}</span></div><span class="task-assignee">${escapeHtml(task.assignee)}</span></div>`).join("")}</div></section>`,
+    Housekeeping: `<section class="panel workspace-panel"><div class="panel-heading"><div><h2>Today’s room preparations</h2><p>${housekeepingTasks.filter(task => !task.done).length} tasks need attention</p></div><span class="guest-count">${housekeepingTasks.filter(task => task.done).length} of ${housekeepingTasks.length} complete</span></div><div class="progress-track workspace-progress"><span style="width:${housekeepingTasks.filter(task => task.done).length / housekeepingTasks.length * 100}%"></span></div><div class="task-board">${housekeepingTasks.map((task, index) => `<div class="task-board-row"><button class="task-check ${task.done ? "checked" : ""}" data-task-done="${index}" aria-label="${escapeHtml(housekeepingActionLabel(task))}">${task.done ? "✓" : "·"}</button><div><strong>${escapeHtml(task.room)}</strong><span>${escapeHtml(task.task)}</span></div><span class="task-assignee">${escapeHtml(task.assignee)}</span></div>`).join("")}</div></section>`,
     Analytics: `<div class="analytics-grid"><section class="panel workspace-panel"><div class="panel-heading"><div><h2>Occupancy this week</h2><p>Rooms occupied by day</p></div><span class="guest-count">+6.2% vs last week</span></div><div class="analytics-chart">${[61, 74, 69, 82, 76, 91, 84].map((height, index) => `<div><span class="chart-value">${height}%</span><i style="height:${height}%"></i><small>${["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"][index]}</small></div>`).join("")}</div></section><section class="panel analytics-highlight"><span class="eyebrow">THIS WEEK</span><strong>€54,280</strong><p>Room and experience revenue</p><span class="trend positive">↗ 12.8% compared with last week</span><hr><span class="eyebrow">GUEST HAPPINESS</span><strong>4.92 <small>/ 5</small></strong><p>From 86 recent reviews</p></section></div>`,
     "Guest experience": `<section class="panel workspace-panel"><div class="panel-heading"><div><h2>Moments that matter</h2><p>Personal touches across your hotel today</p></div><span class="guest-count">3 thoughtful moments</span></div><div class="experience-list experience-expanded"><div class="experience-item"><div class="experience-icon experience-green">♡</div><div><strong>Welcome amenity delivered</strong><span>Room 312 · Amina El Idrissi</span></div><time>9:42 am</time></div><div class="experience-item"><div class="experience-icon experience-peach">✳</div><div><strong>Anniversary noted</strong><span>Room 208 · Sofia Laurent · Consider a personalized welcome</span></div><time>9:18 am</time></div><div class="experience-item"><div class="experience-icon experience-gold">☼</div><div><strong>Garden table reserved</strong><span>For the Benali family · 7:30 pm</span></div><time>8:56 am</time></div></div><div class="experience-tip"><span class="sparkle">✳</span><span><strong>Maselyne Intelligence</strong><br>Three guests are celebrating anniversaries today. A small surprise could make their stay unforgettable.</span></div></section>`
   };
@@ -266,8 +322,9 @@ document.querySelector("#arrival-rows").addEventListener("click", event => {
   const button = event.target.closest("[data-check-in]");
   if (!button) return;
   const guest = arrivals[Number(button.dataset.checkIn)];
-  if (!guest || guest.status !== "Expected") return;
+  if (!guest || guest.status !== "Expected" || guest.arrivalDate > localDateValue) return;
   guest.status = "Checked in";
+  saveDemoState();
   renderArrivals();
   announce(`${guest.name} checked in to room ${guest.room}. Welcome to Maselyne.`);
 });
@@ -276,8 +333,9 @@ document.querySelector("#view-workspace").addEventListener("click", event => {
   const checkInButton = event.target.closest("[data-check-in]");
   if (checkInButton) {
     const guest = arrivals[Number(checkInButton.dataset.checkIn)];
-    if (!guest || guest.status !== "Expected") return;
+    if (!guest || guest.status !== "Expected" || guest.arrivalDate > localDateValue) return;
     guest.status = "Checked in";
+    saveDemoState();
     renderWorkspace(activeView);
     renderArrivals();
     announce(`${guest.name} checked in to room ${guest.room}. Welcome to Maselyne.`);
@@ -288,6 +346,7 @@ document.querySelector("#view-workspace").addEventListener("click", event => {
     const task = housekeepingTasks[Number(taskButton.dataset.taskDone)];
     if (!task) return;
     task.done = !task.done;
+    saveDemoState();
     renderWorkspace(activeView);
     renderArrivals();
     announce(`${task.room} housekeeping task ${task.done ? "completed" : "reopened"}.`);
@@ -322,6 +381,7 @@ document.querySelector("#reservation-form").addEventListener("submit", event => 
     initials: name.split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase(),
     tone: ""
   });
+  saveDemoState();
   form.reset();
   form.elements.date.value = localDateValue;
   dialog.close();
@@ -341,3 +401,4 @@ document.querySelector("#room-callout-action").addEventListener("click", () => {
 });
 
 renderArrivals();
+if (persistenceWarning) announce(localize(persistenceWarning));
