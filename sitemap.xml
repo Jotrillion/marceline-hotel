@@ -8,4 +8,12 @@
     <loc>https://jotrillion.github.io/marceline-hotel/index.fr.html</loc>
     <changefreq>weekly</changefreq>
   </url>
+  <url>
+    <loc>https://jotrillion.github.io/marceline-hotel/stay.html</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://jotrillion.github.io/marceline-hotel/sejour.html</loc>
+    <changefreq>weekly</changefreq>
+  </url>
 </urlset>

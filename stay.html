@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f6f2">
+    <meta name="description" content="Find your stay at Marceline Marrakech. Explore our rooms and residences and request a reservation.">
+    <title>Rooms & Residences — Marceline Marrakech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="booking-page" data-language="en">
+    <header class="booking-topbar">
+      <a class="brand" href="index.html" aria-label="Marceline hotel overview"><span class="brand-mark">M</span><span class="brand-name">marceline<span class="brand-caption">HOTEL & RESIDENCES</span></span></a>
+      <div class="booking-top-actions"><span class="booking-phone">Marrakech, Morocco</span><a class="language-link" href="sejour.html" lang="fr">FR</a><a class="booking-back" href="index.html">Hotel team ↗</a></div>
+    </header>
+
+    <main class="booking-main">
+      <section class="booking-hero">
+        <img src="assets/riad-courtyard.jpg" alt="A peaceful pool courtyard surrounded by palms at Marceline Marrakech">
+        <div class="booking-hero-overlay"></div>
+        <div class="booking-hero-copy"><p class="booking-eyebrow">A PLACE TO FEEL ELSEWHERE</p><h1>Make room for<br>something wonderful.</h1><p>Find your own rhythm at Marceline Marrakech.</p></div>
+        <span class="hero-location">MARRAKECH · MOROCCO</span>
+      </section>
+
+      <section class="booking-intro"><div><p class="eyebrow">YOUR STAY, YOUR WAY</p><h2>Rooms & residences</h2><p>From a restful riad hideaway to a residence with space to settle in, find the stay that feels like yours.</p></div><div class="booking-benefit">✳ <span>Thoughtful stays, tailored to you</span></div></section>
+
+      <section class="stay-grid" aria-label="Available rooms and residences">
+        <article class="stay-card" data-stay-card="riad-suite">
+          <div class="stay-image-wrap"><img src="assets/hotel-suite.jpg" alt="A serene, warmly furnished riad suite with a private patio" loading="lazy"><span class="stay-image-label">THE RIAD COLLECTION</span></div>
+          <div class="stay-card-body"><div class="stay-title-line"><div><p class="stay-kicker">01 · INTIMATE & CALM</p><h3>The Riad Suite</h3></div><span class="stay-capacity">♙ 2 guests</span></div><p class="stay-description">Hand-finished details, a quiet patio, and a king bed made for slow mornings.</p><div class="stay-amenities"><span>King bed</span><span>Private patio</span><span>Breakfast</span></div>          <div class="stay-card-footer"><p><strong>€220</strong> <span>/ night</span></p><button class="select-stay-button" data-select-stay="riad-suite" aria-pressed="false">Choose this stay <span>→</span></button></div></div>
+        </article>
+
+        <article class="stay-card" data-stay-card="garden-residence">
+          <div class="stay-image-wrap"><img src="assets/desert-resort.jpg" alt="A spacious resort residence beside a palm-lined pool" loading="lazy"><span class="stay-image-label">SPACE TO SETTLE IN</span></div>
+          <div class="stay-card-body"><div class="stay-title-line"><div><p class="stay-kicker">02 · ROOM TO BREATHE</p><h3>The Garden Residence</h3></div><span class="stay-capacity">♙ 4 guests</span></div><p class="stay-description">A separate living room opens to the garden, with room for the whole family.</p><div class="stay-amenities"><span>2 bedrooms</span><span>Garden terrace</span><span>Kitchenette</span></div>          <div class="stay-card-footer"><p><strong>€390</strong> <span>/ night</span></p><button class="select-stay-button" data-select-stay="garden-residence" aria-pressed="false">Choose this stay <span>→</span></button></div></div>
+        </article>
+
+        <article class="stay-card" data-stay-card="courtyard-retreat">
+          <div class="stay-image-wrap"><img src="assets/riad-courtyard.jpg" alt="A tranquil courtyard suite overlooking a hotel swimming pool" loading="lazy"><span class="stay-image-label">A PRIVATE HIDEAWAY</span></div>
+          <div class="stay-card-body"><div class="stay-title-line"><div><p class="stay-kicker">03 · OPEN TO THE COURTYARD</p><h3>The Courtyard Retreat</h3></div><span class="stay-capacity">♙ 2 guests</span></div><p class="stay-description">A light-filled retreat steps from the pool, wrapped in the calm of the riad.</p><div class="stay-amenities"><span>King bed</span><span>Pool access</span><span>Breakfast</span></div>          <div class="stay-card-footer"><p><strong>€280</strong> <span>/ night</span></p><button class="select-stay-button" data-select-stay="courtyard-retreat" aria-pressed="false">Choose this stay <span>→</span></button></div></div>
+        </article>
+      </section>
+
+      <section class="booking-details" id="booking-details">
+        <div class="booking-details-copy"><p class="eyebrow">LET'S MAKE A PLAN</p><h2>Choose your dates</h2><p>Select your stay and dates to see your estimated total.</p></div>
+        <div class="booking-fields">
+          <label>Check in<input id="check-in" type="date" required></label>
+          <label>Check out<input id="check-out" type="date" required></label>
+          <label>Guests<select id="guest-count"><option value="1">1 guest</option><option value="2" selected>2 guests</option><option value="3">3 guests</option><option value="4">4 guests</option></select></label>
+          <div class="booking-estimate"><span id="estimate-label">Choose a room to see your estimate</span><strong id="estimate-total">—</strong></div>
+          <button class="primary-button booking-continue" id="booking-continue" disabled>Review your stay <span>→</span></button>
+        </div>
+      </section>
+      <section class="booking-confirmation" id="booking-confirmation" tabindex="-1" hidden>
+        <span class="confirmation-icon">✓</span><div><h2 data-confirmation-title>Reservation request received</h2><p data-confirmation-intro></p><strong data-confirmation-reference></strong><p data-confirmation-no-charge></p><small data-confirmation-saved></small></div>
+      </section>
+      <p class="payment-note">Demo only: no payment is taken, and this request is saved only in this browser—not sent to the hotel.</p>
+      <footer class="booking-footer"><span>Marceline Marrakech</span><span>A thoughtful welcome, from the very first click.</span><a href="sejour.html" lang="fr">Français</a></footer>
+    </main>
+
+    <dialog class="reservation-dialog booking-dialog" id="booking-dialog">
+      <form id="booking-form">
+        <div class="dialog-top"><div><span class="eyebrow">YOUR MARCELINE MOMENT</span><h2>Review your stay</h2></div><button type="button" class="icon-button close-dialog" aria-label="Close">×</button></div>
+        <div class="checkout-summary" id="checkout-summary"></div>
+        <label>Your name<input name="guest" required autocomplete="name" placeholder="e.g. Leila Haddad"></label>
+        <label>Email address<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+        <p class="checkout-disclaimer">Demo only: this does not check availability or contact the hotel. No payment is taken and no card details are collected. Use the hotel’s booking channel to make a real reservation.</p>
+        <div class="dialog-actions"><button type="button" class="secondary-button close-dialog">Cancel</button><button class="primary-button" type="submit">Save demo request <span>→</span></button></div>
+      </form>
+    </dialog>
+    <div class="booking-toast" id="booking-toast" role="status" aria-live="polite"></div>
+    <script src="booking.js"></script>
+  </body>
+</html>

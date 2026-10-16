@@ -1,6 +1,6 @@
 # Marceline Hotel
 
-A responsive hotel-operations demo with English and French interfaces, reservation check-in, room status, guest profiles, housekeeping tasks, and hotel insights.
+A responsive hotel demo with English and French operations dashboards and guest-facing room and residence booking pages.
 
 ## Preview locally
 
@@ -12,8 +12,10 @@ python -m http.server 8000
 
 - English: `/`
 - Français — Marceline: `/index.fr.html`
+- Guest booking: `/stay.html`
+- Réservation client: `/sejour.html`
 
-The overview includes locally bundled hotel and resort photography in `assets/` (sourced from Unsplash), so the images are included with the app.
+The dashboards and booking pages use locally bundled hotel photography in `assets/`.
 
 ## Publish with GitHub Pages
 
@@ -24,4 +26,4 @@ In the repository’s **Settings → Pages**, set the build and deployment sourc
 
 The English page is the default; use its **FR** link for the French Marceline version.
 
-Reservations, check-ins, and housekeeping updates are saved in the current browser for this local demo. They are not shared between visitors or synced to a hotel database.
+Dashboard reservations, check-ins, housekeeping updates, and booking requests are saved in the current browser for this demo. They are not shared between visitors or synced to a hotel database. The guest booking pages demonstrate a photo catalog, sample nightly rates, date selection, and a locally saved estimate. They do not send reservation requests, check room availability, or charge a payment method. Connect a booking backend and payment provider before accepting real reservations or payments.
