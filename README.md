@@ -13,6 +13,8 @@ python -m http.server 8000
 - English: `/`
 - Français — Marceline: `/index.fr.html`
 
+The overview includes locally bundled hotel and resort photography in `assets/` (sourced from Unsplash), so the images are included with the app.
+
 ## Publish with GitHub Pages
 
 The `Deploy hotel app to GitHub Pages` workflow publishes the static files after each push to `main`.
